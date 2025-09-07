@@ -17,8 +17,16 @@ export const registerUser = async (req, res) => {
         })
     }
 
-    // Check if user already exist in the system
+    // Check if password is strong
+    const passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
+    if (!passwordRegex.test(password)) {
+        return res.status(400).json({
+            success: false,
+            message: "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
+        })
+    }
 
+    // Check if user already exist in the system
     const existingUser = await userModel.findOne({email});
 
     if (existingUser){

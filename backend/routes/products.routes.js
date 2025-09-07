@@ -5,9 +5,9 @@ import { authenticate, authorize } from '../middleware/authenticate.js';
 const productsRouter = express.Router();
 
 productsRouter.get("/", getProducts)
-productsRouter.post("/", authenticate, authorize, createProduct)
-productsRouter.get("/:id", getProductId)
-productsRouter.put("/:id", updateProduct)
-productsRouter.delete("/:id", deleteProduct)
+productsRouter.post("/", authenticate, authorize('admin'), createProduct)
+productsRouter.get("/:id", authenticate, getProductId)
+productsRouter.put("/:id", authenticate, updateProduct)
+productsRouter.delete("/:id", authenticate, deleteProduct)
 
 export default productsRouter;

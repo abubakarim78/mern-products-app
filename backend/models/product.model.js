@@ -37,6 +37,12 @@ const productSchema = new mongoose.Schema({
       timestamps: true                               // Why? Track when products were added/updated
 })
 
+// Indexes for performance optimization
+productSchema.index({ category: 1 });
+productSchema.index({ price: 1 });
+productSchema.index({ name: 'text', description: 'text' });
+productSchema.index({ createdAt: -1 });
+
 const productModel = new mongoose.model("Product", productSchema)
 
 export default productModel;

@@ -23,8 +23,15 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters'],
-    select: false                                    // Don't include password in queries by default
+    minlength: [8, 'Password must be at least 8 characters'],
+    validate: {
+      validator: function(password) {
+        // Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character
+        return /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(password);
+      },
+      message:  'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character',
+    },
+    select: false                                   // Exclude password field by default
   },
   
   role: {
@@ -68,6 +75,9 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+// Indexes for faster queries
+userSchema.index({ email: 1 });
 
 const userModel = new mongoose.model("User", userSchema);
 

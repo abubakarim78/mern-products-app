@@ -79,7 +79,7 @@ export const authorize = (...roles) => {
         message: 'Access denied. Please login first.'
       });
     }
-    
+
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
